@@ -8,107 +8,118 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- הגדרת פונט Inter -->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1f2937; /* Dark background */
-        }
-        .card {
-            background-color: #ffffff;
         }
         /* סגנון עבור הטבלה */
         .history-table th, .history-table td {
-            padding: 0.5rem;
+            padding: 0.75rem;
             text-align: right;
             border-bottom: 1px solid #e5e7eb;
         }
         .history-table th {
-            background-color: #f3f4f6;
+            background-color: #eff6ff; /* כחול בהיר מאוד לכותרות */
             font-weight: 600;
+            color: #1f2937;
         }
         .history-table tr:last-child td {
             border-bottom: none;
         }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex items-start justify-center">
+<body class="p-4 md:p-8 min-h-screen flex items-center justify-center bg-gray-50">
 
-    <div class="w-full max-w-lg card p-6 md:p-10 rounded-xl shadow-2xl my-8">
-        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">מחשבון מימון לטיול גברים</h1>
+    <div class="w-full max-w-lg bg-white p-6 md:p-10 rounded-3xl shadow-2xl my-8 transform transition duration-500 hover:shadow-3xl border border-gray-100">
+        <h1 class="text-4xl font-extrabold mb-6 text-center text-indigo-700">
+            מחשבון מימון לטיול גברים
+        </h1>
         
-        <!-- הגדרות קבועות מוצגות -->
-        <div class="mb-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-            <h2 class="text-lg font-semibold text-blue-800 mb-2">נתונים קבועים</h2>
-            <p class="text-sm text-gray-600">
-                <span class="font-medium">תקציב קבוע:</span> 10,000 ש"ח
-            </p>
-            <p class="text-sm text-gray-600">
-                <span class="font-medium">עלות למשתתף מלא:</span> 525 ש"ח
-            </p>
-            <p class="text-sm text-gray-600">
-                <span class="font-medium">עלות למשתתף חלקי:</span> 325 ש"ח
-            </p>
+        <!-- נתונים קבועים - מודגשים במשטח צבעוני ונעים -->
+        <div class="mb-8 bg-indigo-50 p-5 rounded-xl border-t-4 border-indigo-500 shadow-inner">
+            <h2 class="text-xl font-bold text-indigo-800 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block ml-2 rtl:mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                נתוני התקציב הקבוע
+            </h2>
+            <div class="space-y-2 text-gray-700 text-base font-medium">
+                <p>
+                    <span class="text-indigo-600 font-semibold">תקציב קבוע:</span> 
+                    <span class="float-left rtl:float-right font-extrabold">10,000 ש"ח</span>
+                </p>
+                <p>
+                    <span class="text-indigo-600 font-semibold">עלות למשתתף מלא:</span> 
+                    <span class="float-left rtl:float-right">525 ש"ח</span>
+                </p>
+                <p>
+                    <span class="text-indigo-600 font-semibold">עלות למשתתף חלקי:</span> 
+                    <span class="float-left rtl:float-right">325 ש"ח</span>
+                </p>
+            </div>
         </div>
 
-        <!-- טופס קלט -->
-        <div class="space-y-4">
+        <!-- טופס קלט - עם עיצוב אינטראקטיבי -->
+        <div class="space-y-6">
             <!-- קלט משתתפים מלאים -->
             <div>
-                <label for="numFull" class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="numFull" class="block text-base font-semibold text-gray-700 mb-2">
                     מספר משתתפים מלאים (525 ש"ח לאדם)
                 </label>
                 <input type="number" id="numFull" value="0" min="0" 
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                        class="mt-1 block w-full px-4 py-3 border-2 border-indigo-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500" 
                         oninput="calculateCost()">
             </div>
 
             <!-- קלט משתתפים חלקיים -->
             <div>
-                <label for="numPartial" class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="numPartial" class="block text-base font-semibold text-gray-700 mb-2">
                     מספר משתתפים חלקיים (325 ש"ח לאדם)
                 </label>
                 <input type="number" id="numPartial" value="0" min="0" 
-                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                        class="mt-1 block w-full px-4 py-3 border-2 border-indigo-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500" 
                         oninput="calculateCost()">
             </div>
         </div>
 
-        <!-- כפתורי פעולה - שונה ל-grid-cols-1 -->
-        <div class="grid grid-cols-1 gap-3 mt-6">
-            
-            <!-- כפתור שמירה -->
+        <!-- כפתור שמירה - מודגש ונעים -->
+        <div class="mt-8">
             <button onclick="saveCalculation()" 
-                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-indigo-600 bg-white border-indigo-600 border hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01]">
-                שמור חישוב
+                    class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-xl text-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-300 ease-in-out transform hover:scale-[1.02]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 rtl:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                שמור חישוב נוכחי
             </button>
         </div>
         
-        <!-- אזור תוצאות -->
-        <div class="mt-8 pt-6 border-t border-gray-200 space-y-4">
-            <h2 class="text-xl font-bold text-gray-800">סיכום חישוב נוכחי</h2>
+        <!-- אזור תוצאות - עם צבעים דינמיים וגדולים -->
+        <div class="mt-8 pt-6 border-t-2 border-indigo-100 space-y-4">
+            <h2 class="text-2xl font-bold text-gray-800">סיכום חישוב נוכחי</h2>
 
             <!-- סך המשתתפים -->
-            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
-                <span class="font-medium text-gray-600">סך המשתתפים:</span>
-                <span id="totalPeopleOutput" class="font-bold text-gray-800">0</span>
+            <div class="flex justify-between p-4 bg-gray-50 rounded-xl border-l-4 border-gray-300">
+                <span class="font-medium text-gray-700">סך המשתתפים:</span>
+                <span id="totalPeopleOutput" class="font-extrabold text-xl text-gray-800">0</span>
             </div>
 
             <!-- עלות כוללת -->
-            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
-                <span class="font-medium text-gray-600">עלות כוללת לטיול:</span>
-                <span id="totalCostOutput" class="font-bold text-gray-800">0 ש"ח</span>
+            <div class="flex justify-between p-4 bg-gray-50 rounded-xl border-l-4 border-gray-300">
+                <span class="font-medium text-gray-700">עלות כוללת לטיול:</span>
+                <span id="totalCostOutput" class="font-extrabold text-xl text-indigo-600">0 ש"ח</span>
             </div>
 
-            <!-- עודף/חסר לתקציב -->
-            <div class="flex justify-between p-3 rounded-lg" id="deficitBox">
-                <span class="font-medium text-gray-600" id="deficitLabel">עודף/חסר לתקציב (חסר):</span>
-                <span id="deficitOutput" class="font-bold text-red-600">0 ש"ח</span>
+            <!-- עודף/חסר לתקציב - דינמי -->
+            <div class="flex justify-between p-4 rounded-xl shadow-inner transition duration-300" id="deficitBox">
+                <span class="font-semibold text-gray-700" id="deficitLabel">עודף/חסר לתקציב (חסר):</span>
+                <span id="deficitOutput" class="font-extrabold text-xl text-red-600">0 ש"ח</span>
             </div>
 
-            <!-- תוספת נדרשת לאדם -->
-            <div class="p-4 rounded-lg shadow-md" id="contributionBox">
-                <p class="text-center text-sm text-gray-600 mb-1">אם קיים חוסר, זהו הסכום שכל משתתף צריך להוסיף:</p>
+            <!-- תוספת נדרשת לאדם - האלמנט הכי בולט -->
+            <div class="p-5 rounded-2xl shadow-lg transition duration-300 transform hover:scale-[1.01]" id="contributionBox">
+                <p class="text-center text-sm text-gray-600 mb-2 font-medium">אם קיים חוסר, זהו הסכום שכל משתתף צריך להוסיף:</p>
                 <div class="flex flex-col items-center">
-                    <span class="text-3xl font-extrabold text-green-700" id="contributionPerPersonOutput">
+                    <span class="text-4xl font-black text-green-700" id="contributionPerPersonOutput">
                         0.00 ש"ח
                     </span>
                     <span class="text-xs text-gray-500 mt-1">(תוספת נדרשת למשתתף)</span>
@@ -117,21 +128,21 @@
         </div>
 
         <!-- הודעות שגיאה/מידע -->
-        <div id="messageBox" class="mt-4 p-3 rounded-lg text-center text-sm hidden"></div>
+        <div id="messageBox" class="mt-6 p-4 rounded-xl text-center text-sm font-medium hidden transition duration-300"></div>
 
-        <!-- טבלת היסטוריית חישובים (חדש) -->
-        <div class="mt-10 pt-6 border-t border-gray-200">
+        <!-- טבלת היסטוריית חישובים -->
+        <div class="mt-10 pt-6 border-t-2 border-indigo-100">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-gray-800">היסטוריית חישובים שנשמרו</h2>
+                <h2 class="text-2xl font-bold text-gray-800">היסטוריית חישובים שנשמרו</h2>
                 <button onclick="clearHistory()"
-                        class="text-sm text-red-600 hover:text-red-800 font-medium transition duration-150">
+                        class="text-sm text-red-600 hover:text-red-800 font-semibold transition duration-150 p-2 rounded-lg hover:bg-red-50">
                     נקה היסטוריה
                 </button>
             </div>
 
-            <!-- כפתור הורדת CSV חדש -->
+            <!-- כפתור הורדת CSV -->
             <button onclick="downloadHistoryTableAsCSV()"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out transform hover:scale-[1.01] mb-4">
+                    class="w-full flex justify-center items-center py-2 px-4 rounded-xl shadow-md text-base font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:scale-[1.01] mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 rtl:mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
                     <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v7a1 1 0 11-2 0V3a1 1 0 011-1z" clip-rule="evenodd" />
@@ -139,16 +150,16 @@
                 הורד היסטוריה כקובץ CSV
             </button>
 
-            <div class="overflow-x-auto rounded-lg shadow-lg">
+            <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200">
                 <table class="w-full text-sm history-table border-collapse">
                     <thead>
                         <tr>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">תאריך/שעה</th>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">מלאים</th>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">חלקיים</th>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">סך עלות</th>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">עודף/חסר</th>
-                            <th class="py-2 px-3 border-b-2 border-gray-300">תוספת לאדם</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">תאריך/שעה</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">מלאים</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">חלקיים</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">סך עלות</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">עודף/חסר</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">תוספת לאדם</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody" class="bg-white">
@@ -157,7 +168,7 @@
                 </table>
             </div>
 
-            <p id="noHistoryMessage" class="mt-4 text-center text-gray-500 text-sm hidden">
+            <p id="noHistoryMessage" class="mt-4 text-center text-gray-500 text-sm font-medium hidden">
                 אין חישובים שמורים עדיין.
             </p>
         </div>
@@ -187,7 +198,7 @@
             } catch (error) {
                 console.error('Error loading history from localStorage:', error);
                 // אם יש שגיאה בטעינה, מתחילים מערך ריק
-                calculationHistory = []; 
+                calculationHistory = [];  
             }
         }
 
@@ -220,7 +231,7 @@
             // רינדור השורות מהיסטוריה (החדש ביותר ראשון)
             [...calculationHistory].reverse().forEach(calc => {
                 const row = tableBody.insertRow();
-                row.className = 'hover:bg-gray-50';
+                row.className = 'hover:bg-indigo-50 transition duration-150';
 
                 // פורמט תאריך ושעה
                 const date = new Date(calc.timestamp);
@@ -228,24 +239,30 @@
                 const formattedDate = date.toLocaleDateString('he-IL');
                 
                 // צביעה ועיצוב העודף/חסר
-                let deficitText = calc.deficit < 0 
-                    ? `עודף (${(calc.deficit * -1).toLocaleString('he-IL')} ש"ח)`
-                    : calc.deficit > 0 
-                    ? `חסר (${calc.deficit.toLocaleString('he-IL')} ש"ח)`
-                    : 'מאוזן (0 ש"ח)';
-
-                let deficitClass = calc.deficit < 0 ? 'text-blue-600 font-medium' : calc.deficit > 0 ? 'text-red-600 font-medium' : 'text-gray-600';
+                let deficitText;
+                let deficitClass;
+                
+                if (calc.deficit < 0) {
+                    deficitText = `עודף (${(calc.deficit * -1).toLocaleString('he-IL')} ש"ח)`;
+                    deficitClass = 'text-teal-600 font-bold'; // שימוש בצבע תכלת/טורקיז לעודף
+                } else if (calc.deficit > 0) {
+                    deficitText = `חסר (${calc.deficit.toLocaleString('he-IL')} ש"ח)`;
+                    deficitClass = 'text-red-600 font-bold'; // אדום לחוסר
+                } else {
+                    deficitText = 'מאוזן (0 ש"ח)';
+                    deficitClass = 'text-gray-600 font-medium';
+                }
 
                 // הוספת התאים
                 row.innerHTML = `
                     <td class="py-2 px-3 whitespace-nowrap text-gray-500">
-                        ${formattedDate}<br><span class="text-xs">${formattedTime}</span>
+                        ${formattedDate}<br><span class="text-xs text-gray-400">${formattedTime}</span>
                     </td>
-                    <td class="py-2 px-3 text-center">${calc.numFull}</td>
-                    <td class="py-2 px-3 text-center">${calc.numPartial}</td>
-                    <td class="py-2 px-3 font-semibold">${calc.totalCost.toLocaleString('he-IL')} ש"ח</td>
+                    <td class="py-2 px-3 text-center font-medium">${calc.numFull}</td>
+                    <td class="py-2 px-3 text-center font-medium">${calc.numPartial}</td>
+                    <td class="py-2 px-3 font-extrabold text-indigo-600">${calc.totalCost.toLocaleString('he-IL')} ש"ח</td>
                     <td class="py-2 px-3 ${deficitClass}">${deficitText}</td>
-                    <td class="py-2 px-3 text-center text-sm font-bold text-green-700">${calc.contributionPerPerson.toFixed(2).toLocaleString('he-IL')} ש"ח</td>
+                    <td class="py-2 px-3 text-center text-base font-black text-green-700">${calc.contributionPerPerson.toFixed(2).toLocaleString('he-IL')} ש"ח</td>
                 `;
             });
         }
@@ -262,7 +279,7 @@
             if (totalPeople === 0) {
                 const messageBox = document.getElementById('messageBox');
                 messageBox.textContent = 'לא ניתן לשמור חישוב ללא משתתפים.';
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-red-100 text-red-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-red-100 text-red-800 transition duration-300';
                 messageBox.classList.remove('hidden');
                 return;
             }
@@ -288,7 +305,7 @@
 
             const messageBox = document.getElementById('messageBox');
             messageBox.textContent = 'החישוב נשמר בהצלחה בהיסטוריה.';
-            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-green-100 text-green-800';
+            messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-green-100 text-green-800 transition duration-300';
             messageBox.classList.remove('hidden');
         }
 
@@ -305,12 +322,12 @@
             
             const messageBox = document.getElementById('messageBox');
             messageBox.textContent = 'היסטוריית החישובים נוקתה בהצלחה.';
-            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-orange-100 text-orange-800';
+            messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-yellow-100 text-yellow-800 transition duration-300';
             messageBox.classList.remove('hidden');
         }
 
 
-        // פונקציה לחישוב העלויות (ללא שינוי מהותי)
+        // פונקציה לחישוב העלויות
         function calculateCost() {
             // קבלת הקלטים
             const numFull = parseInt(document.getElementById('numFull').value) || 0;
@@ -336,8 +353,8 @@
             totalCostOutput.textContent = totalCost.toLocaleString('he-IL') + ' ש"ח';
             
             // איפוס סגנון
-            deficitBox.className = 'flex justify-between p-3 rounded-lg';
-            contributionBox.className = 'p-4 rounded-lg shadow-md';
+            deficitBox.className = 'flex justify-between p-4 rounded-xl shadow-inner transition duration-300';
+            contributionBox.className = 'p-5 rounded-2xl shadow-lg transition duration-300 transform hover:scale-[1.01]';
             messageBox.classList.add('hidden');
             
             let contributionPerPerson = 0;
@@ -346,12 +363,13 @@
                 // מקרה: אין משתתפים
                 deficitLabel.textContent = 'עודף/חסר לתקציב:';
                 deficitOutput.textContent = '0 ש"ח';
-                deficitOutput.className = 'font-bold text-gray-800';
+                deficitOutput.className = 'font-bold text-xl text-gray-800';
                 contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
                 contributionBox.classList.add('bg-gray-100');
                 
                 messageBox.textContent = 'הכנס מספר משתתפים כדי להתחיל בחישוב.';
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-yellow-100 text-yellow-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-yellow-100 text-yellow-800';
                 messageBox.classList.remove('hidden');
                 
                 return;
@@ -361,42 +379,45 @@
                 // מקרה: חסר כסף (Deficit)
                 deficitLabel.textContent = 'חסר לתקציב:';
                 deficitOutput.textContent = deficit.toLocaleString('he-IL') + ' ש"ח';
-                deficitOutput.className = 'font-bold text-red-600';
-                deficitBox.classList.add('bg-red-50');
+                deficitOutput.className = 'font-extrabold text-xl text-red-600';
+                deficitBox.classList.add('bg-red-50', 'border-l-4', 'border-red-400');
 
                 // חישוב התוספת לאדם
                 contributionPerPerson = deficit / totalPeople;
                 contributionPerPersonOutput.textContent = contributionPerPerson.toFixed(2).toLocaleString('he-IL') + ' ש"ח';
-                contributionBox.classList.add('bg-green-100');
+                contributionPerPersonOutput.className = 'text-4xl font-black text-green-700';
+                contributionBox.classList.add('bg-green-100', 'border-4', 'border-green-300');
                 
                 messageBox.textContent = 'נדרשת תוספת של כסף מכל משתתף כדי לכסות את החוסר.';
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-green-100 text-green-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-green-100 text-green-800';
 
             } else if (deficit < 0) {
                 // מקרה: יש עודף כסף (Surplus)
                 deficitLabel.textContent = 'עודף בתקציב:';
                 // מציג את העודף כערך חיובי
                 deficitOutput.textContent = (deficit * -1).toLocaleString('he-IL') + ' ש"ח'; 
-                deficitOutput.className = 'font-bold text-blue-600';
-                deficitBox.classList.add('bg-blue-50');
+                deficitOutput.className = 'font-extrabold text-xl text-teal-600'; // שימוש בצבע תכלת/טורקיז לעודף
+                deficitBox.classList.add('bg-teal-50', 'border-l-4', 'border-teal-400');
                 
                 contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
                 contributionBox.classList.add('bg-gray-100');
                 
                 messageBox.textContent = `יש לכם עודף של ${(deficit * -1).toLocaleString('he-IL')} ש"ח. אין צורך בתוספת.`;
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-blue-100 text-blue-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-blue-100 text-blue-800';
 
             } else {
                 // מקרה: בדיוק בכסף
-                deficitLabel.textContent = 'עודף/חסר לתקציב:';
+                deficitLabel.textContent = 'מאוזן:';
                 deficitOutput.textContent = '0 ש"ח';
-                deficitOutput.className = 'font-bold text-gray-800';
-                deficitBox.classList.add('bg-yellow-50');
+                deficitOutput.className = 'font-extrabold text-xl text-gray-800';
+                deficitBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-400');
                 contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
                 contributionBox.classList.add('bg-gray-100');
                 
                 messageBox.textContent = 'העלות הכוללת תואמת בדיוק לתקציב הקבוע! אין צורך בתוספת.';
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-yellow-100 text-yellow-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-yellow-100 text-yellow-800';
             }
             
             // תמיד מציג את הודעת המידע
@@ -410,7 +431,7 @@
             if (calculationHistory.length === 0) {
                 const messageBox = document.getElementById('messageBox');
                 messageBox.textContent = 'אין חישובים שמורים להורדה.';
-                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-red-100 text-red-800';
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-red-100 text-red-800';
                 messageBox.classList.remove('hidden');
                 return;
             }
@@ -466,7 +487,7 @@
             
             const messageBox = document.getElementById('messageBox');
             messageBox.textContent = 'היסטוריית החישובים הורדה בהצלחה כקובץ CSV.';
-            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-blue-100 text-blue-800';
+            messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-teal-100 text-teal-800';
             messageBox.classList.remove('hidden');
         }
 
