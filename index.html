@@ -6,7 +6,7 @@
     <title>מחשבון מימון לטיול גברים</title>
     <!-- טעינת Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- הגדרת פונט Inter (ברירת מחדל של Tailwind) -->
+    <!-- הגדרת פונט Inter -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -15,11 +15,24 @@
         .card {
             background-color: #ffffff;
         }
+        /* סגנון עבור הטבלה */
+        .history-table th, .history-table td {
+            padding: 0.5rem;
+            text-align: right;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .history-table th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+<body class="p-4 md:p-8 min-h-screen flex items-start justify-center">
 
-    <div class="w-full max-w-lg card p-6 md:p-10 rounded-xl shadow-2xl">
+    <div class="w-full max-w-lg card p-6 md:p-10 rounded-xl shadow-2xl my-8">
         <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">מחשבון מימון לטיול גברים</h1>
         
         <!-- הגדרות קבועות מוצגות -->
@@ -44,8 +57,8 @@
                     מספר משתתפים מלאים (525 ש"ח לאדם)
                 </label>
                 <input type="number" id="numFull" value="0" min="0" 
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
-                       oninput="calculateCost()">
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                        oninput="calculateCost()">
             </div>
 
             <!-- קלט משתתפים חלקיים -->
@@ -54,20 +67,29 @@
                     מספר משתתפים חלקיים (325 ש"ח לאדם)
                 </label>
                 <input type="number" id="numPartial" value="0" min="0" 
-                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
-                       oninput="calculateCost()">
+                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                        oninput="calculateCost()">
             </div>
         </div>
 
-        <!-- כפתור חישוב (החישוב מתבצע אוטומטית, אבל הכפתור נשאר לנוחות) -->
-        <button onclick="calculateCost()" 
-                class="mt-6 w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01]">
-            חשב את המימון
-        </button>
-
+        <!-- כפתורי פעולה -->
+        <div class="grid grid-cols-2 gap-3 mt-6">
+            <!-- כפתור חישוב -->
+            <button onclick="calculateCost()" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01]">
+                חשב את המימון
+            </button>
+            
+            <!-- כפתור שמירה -->
+            <button onclick="saveCalculation()" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-indigo-600 bg-white border-indigo-600 border hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01]">
+                שמור חישוב
+            </button>
+        </div>
+        
         <!-- אזור תוצאות -->
         <div class="mt-8 pt-6 border-t border-gray-200 space-y-4">
-            <h2 class="text-xl font-bold text-gray-800">סיכום חישוב</h2>
+            <h2 class="text-xl font-bold text-gray-800">סיכום חישוב נוכחי</h2>
 
             <!-- סך המשתתפים -->
             <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
@@ -101,15 +123,199 @@
 
         <!-- הודעות שגיאה/מידע -->
         <div id="messageBox" class="mt-4 p-3 rounded-lg text-center text-sm hidden"></div>
+
+        <!-- טבלת היסטוריית חישובים (חדש) -->
+        <div class="mt-10 pt-6 border-t border-gray-200">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">היסטוריית חישובים שנשמרו</h2>
+                <button onclick="clearHistory()"
+                        class="text-sm text-red-600 hover:text-red-800 font-medium transition duration-150">
+                    נקה היסטוריה
+                </button>
+            </div>
+
+            <!-- כפתור הורדת CSV חדש -->
+            <button onclick="downloadHistoryTableAsCSV()"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out transform hover:scale-[1.01] mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 rtl:mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L10 11.586l2.293-2.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v7a1 1 0 11-2 0V3a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                הורד היסטוריה כקובץ CSV
+            </button>
+
+            <div class="overflow-x-auto rounded-lg shadow-lg">
+                <table class="w-full text-sm history-table border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">תאריך/שעה</th>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">מלאים</th>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">חלקיים</th>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">סך עלות</th>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">עודף/חסר</th>
+                            <th class="py-2 px-3 border-b-2 border-gray-300">תוספת לאדם</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody" class="bg-white">
+                        <!-- שורות החישוב ייטענו כאן -->
+                    </tbody>
+                </table>
+            </div>
+
+            <p id="noHistoryMessage" class="mt-4 text-center text-gray-500 text-sm hidden">
+                אין חישובים שמורים עדיין.
+            </p>
+        </div>
     </div>
 
     <script>
+        // *** הערה חשובה: לצורך פשטות ופונקציונליות מיידית באפליקציה פשוטה זו, הנתונים נשמרים באופן זמני ב-localStorage. ***
+        // *** ליישום אחסון קבוע, מאובטח ומשותף (Multi-User), יש להשתמש ב-Firestore כנדרש. ***
+
         // הגדרות קבועות
         const FIXED_BUDGET = 10000;
         const COST_FULL = 525;
         const COST_PARTIAL = 325;
 
-        // פונקציה לחישוב העלויות
+        // מערך גלובלי לאחסון היסטוריית החישובים
+        let calculationHistory = [];
+
+        /**
+         * טוען את היסטוריית החישובים מ-localStorage.
+         */
+        function loadHistory() {
+            try {
+                const storedHistory = localStorage.getItem('tripFinanceHistory');
+                if (storedHistory) {
+                    calculationHistory = JSON.parse(storedHistory);
+                }
+            } catch (error) {
+                console.error('Error loading history from localStorage:', error);
+                // אם יש שגיאה בטעינה, מתחילים מערך ריק
+                calculationHistory = []; 
+            }
+        }
+
+        /**
+         * שומר את היסטוריית החישובים ל-localStorage.
+         */
+        function saveHistory() {
+            try {
+                localStorage.setItem('tripFinanceHistory', JSON.stringify(calculationHistory));
+            } catch (error) {
+                console.error('Error saving history to localStorage:', error);
+            }
+        }
+        
+        /**
+         * מעבד ומציג את טבלת היסטוריית החישובים.
+         */
+        function renderHistory() {
+            const tableBody = document.getElementById('historyTableBody');
+            const noHistoryMessage = document.getElementById('noHistoryMessage');
+            tableBody.innerHTML = ''; // ניקוי הטבלה הקיימת
+
+            if (calculationHistory.length === 0) {
+                noHistoryMessage.classList.remove('hidden');
+                return;
+            }
+
+            noHistoryMessage.classList.add('hidden');
+
+            // רינדור השורות מהיסטוריה (החדש ביותר ראשון)
+            [...calculationHistory].reverse().forEach(calc => {
+                const row = tableBody.insertRow();
+                row.className = 'hover:bg-gray-50';
+
+                // פורמט תאריך ושעה
+                const date = new Date(calc.timestamp);
+                const formattedTime = date.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                const formattedDate = date.toLocaleDateString('he-IL');
+                
+                // צביעה ועיצוב העודף/חסר
+                let deficitText = calc.deficit < 0 
+                    ? `עודף (${(calc.deficit * -1).toLocaleString('he-IL')} ש"ח)`
+                    : calc.deficit > 0 
+                    ? `חסר (${calc.deficit.toLocaleString('he-IL')} ש"ח)`
+                    : 'מאוזן (0 ש"ח)';
+
+                let deficitClass = calc.deficit < 0 ? 'text-blue-600 font-medium' : calc.deficit > 0 ? 'text-red-600 font-medium' : 'text-gray-600';
+
+                // הוספת התאים
+                row.innerHTML = `
+                    <td class="py-2 px-3 whitespace-nowrap text-gray-500">
+                        ${formattedDate}<br><span class="text-xs">${formattedTime}</span>
+                    </td>
+                    <td class="py-2 px-3 text-center">${calc.numFull}</td>
+                    <td class="py-2 px-3 text-center">${calc.numPartial}</td>
+                    <td class="py-2 px-3 font-semibold">${calc.totalCost.toLocaleString('he-IL')} ש"ח</td>
+                    <td class="py-2 px-3 ${deficitClass}">${deficitText}</td>
+                    <td class="py-2 px-3 text-center text-sm font-bold text-green-700">${calc.contributionPerPerson.toFixed(2).toLocaleString('he-IL')} ש"ח</td>
+                `;
+            });
+        }
+
+        /**
+         * שומר את החישוב הנוכחי להיסטוריה.
+         */
+        function saveCalculation() {
+            // ודא שהחישוב בוצע לפני השמירה
+            const numFull = parseInt(document.getElementById('numFull').value) || 0;
+            const numPartial = parseInt(document.getElementById('numPartial').value) || 0;
+            const totalPeople = numFull + numPartial;
+
+            if (totalPeople === 0) {
+                const messageBox = document.getElementById('messageBox');
+                messageBox.textContent = 'לא ניתן לשמור חישוב ללא משתתפים.';
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-red-100 text-red-800';
+                messageBox.classList.remove('hidden');
+                return;
+            }
+
+            // קבלת הנתונים מהפלט הנוכחי (כדי למנוע חישוב כפול)
+            const totalCost = (numFull * COST_FULL) + (numPartial * COST_PARTIAL);
+            const deficit = totalCost - FIXED_BUDGET;
+            const contributionPerPerson = deficit > 0 ? deficit / totalPeople : 0;
+            
+            const newCalculation = {
+                timestamp: Date.now(),
+                numFull: numFull,
+                numPartial: numPartial,
+                totalPeople: totalPeople,
+                totalCost: totalCost,
+                deficit: deficit, // חיובי=חסר, שלילי=עודף
+                contributionPerPerson: contributionPerPerson
+            };
+
+            calculationHistory.push(newCalculation);
+            saveHistory(); // שמירה ל-localStorage
+            renderHistory(); // רינדור מחדש של הטבלה
+
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = 'החישוב נשמר בהצלחה בהיסטוריה.';
+            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-green-100 text-green-800';
+            messageBox.classList.remove('hidden');
+        }
+
+        /**
+         * מנקה את היסטוריית החישובים (ללא אישור).
+         */
+        function clearHistory() {
+            if (calculationHistory.length === 0) return;
+
+            // מבצע מחיקה מיידית (נמנע משימוש ב-confirm() האסור)
+            calculationHistory = [];
+            saveHistory();
+            renderHistory();
+            
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = 'היסטוריית החישובים נוקתה בהצלחה.';
+            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-orange-100 text-orange-800';
+            messageBox.classList.remove('hidden');
+        }
+
+
+        // פונקציה לחישוב העלויות (ללא שינוי מהותי)
         function calculateCost() {
             // קבלת הקלטים
             const numFull = parseInt(document.getElementById('numFull').value) || 0;
@@ -151,6 +357,7 @@
                 
                 messageBox.textContent = 'הכנס מספר משתתפים כדי להתחיל בחישוב.';
                 messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-yellow-100 text-yellow-800';
+                messageBox.classList.remove('hidden');
                 
                 return;
             }
@@ -201,9 +408,79 @@
             messageBox.classList.remove('hidden');
         }
 
-        // הפעלת החישוב הראשונית עם טעינת הדף (כדי לאפס את הפלטים)
+        /**
+         * פונקציה להורדת נתוני ההיסטוריה כקובץ CSV.
+         */
+        function downloadHistoryTableAsCSV() {
+            if (calculationHistory.length === 0) {
+                const messageBox = document.getElementById('messageBox');
+                messageBox.textContent = 'אין חישובים שמורים להורדה.';
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-red-100 text-red-800';
+                messageBox.classList.remove('hidden');
+                return;
+            }
+
+            // 1. כותרות ה-CSV
+            const headers = [
+                "תאריך_ושעה",
+                "משתתפים_מלאים",
+                "משתתפים_חלקיים",
+                "סך_משתתפים",
+                "עלות_כוללת",
+                "יתרה_לתקציב_(חיובי=חסר_שלילי=עודף)",
+                "סטטוס",
+                "תוספת_נדרשת_לאדם"
+            ];
+            
+            // 2. בניית שורות הנתונים
+            const csvRows = calculationHistory.map(calc => {
+                const date = new Date(calc.timestamp);
+                const dateTimeStr = date.toLocaleDateString('he-IL') + ' ' + date.toLocaleTimeString('he-IL');
+                
+                const status = calc.deficit > 0 ? "חסר" : calc.deficit < 0 ? "עודף" : "מאוזן";
+
+                return [
+                    `"${dateTimeStr}"`, // תאריך עם מרכאות כדי לשמור על הפורמט
+                    calc.numFull,
+                    calc.numPartial,
+                    calc.totalPeople,
+                    calc.totalCost,
+                    calc.deficit, // הנתון הגולמי
+                    status,
+                    calc.contributionPerPerson.toFixed(2)
+                ].join(','); // הפרדה באמצעות פסיקים
+            });
+            
+            // 3. איחוד כותרות ושורות
+            const csvString = [
+                headers.join(','),
+                ...csvRows
+            ].join('\n'); // הפרדת שורות באמצעות ירידת שורה
+            
+            // 4. הפעלת ההורדה
+            const blob = new Blob(["\uFEFF" + csvString], { type: 'text/csv;charset=utf-8;' }); // BOM for Hebrew/Excel compatibility
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'היסטוריית_חישוב_מימון.csv';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            URL.revokeObjectURL(a.href);
+            
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = 'היסטוריית החישובים הורדה בהצלחה כקובץ CSV.';
+            messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-blue-100 text-blue-800';
+            messageBox.classList.remove('hidden');
+        }
+
+
+        // הפעלת הטעינה והחישוב הראשונית עם טעינת הדף
         window.onload = function() {
-            calculateCost();
+            loadHistory(); // טעינת היסטוריה מהשמירה
+            renderHistory(); // הצגת הטבלה
+            calculateCost(); // חישוב הפלט הנוכחי
         };
 
     </script>
