@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מחשבון מימון לטיול גברים</title>
+    <!-- טעינת Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- הגדרת פונט Inter (ברירת מחדל של Tailwind) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1f2937; /* Dark background */
+        }
+        .card {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-lg card p-6 md:p-10 rounded-xl shadow-2xl">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">מחשבון מימון לטיול גברים</h1>
+        
+        <!-- הגדרות קבועות מוצגות -->
+        <div class="mb-6 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <h2 class="text-lg font-semibold text-blue-800 mb-2">נתונים קבועים</h2>
+            <p class="text-sm text-gray-600">
+                <span class="font-medium">תקציב קבוע:</span> 10,000 ש"ח
+            </p>
+            <p class="text-sm text-gray-600">
+                <span class="font-medium">עלות למשתתף מלא:</span> 525 ש"ח
+            </p>
+            <p class="text-sm text-gray-600">
+                <span class="font-medium">עלות למשתתף חלקי:</span> 325 ש"ח
+            </p>
+        </div>
+
+        <!-- טופס קלט -->
+        <div class="space-y-4">
+            <!-- קלט משתתפים מלאים -->
+            <div>
+                <label for="numFull" class="block text-sm font-medium text-gray-700 mb-1">
+                    מספר משתתפים מלאים (525 ש"ח לאדם)
+                </label>
+                <input type="number" id="numFull" value="0" min="0" 
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                       oninput="calculateCost()">
+            </div>
+
+            <!-- קלט משתתפים חלקיים -->
+            <div>
+                <label for="numPartial" class="block text-sm font-medium text-gray-700 mb-1">
+                    מספר משתתפים חלקיים (325 ש"ח לאדם)
+                </label>
+                <input type="number" id="numPartial" value="0" min="0" 
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-lg text-center" 
+                       oninput="calculateCost()">
+            </div>
+        </div>
+
+        <!-- כפתור חישוב (החישוב מתבצע אוטומטית, אבל הכפתור נשאר לנוחות) -->
+        <button onclick="calculateCost()" 
+                class="mt-6 w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out transform hover:scale-[1.01]">
+            חשב את המימון
+        </button>
+
+        <!-- אזור תוצאות -->
+        <div class="mt-8 pt-6 border-t border-gray-200 space-y-4">
+            <h2 class="text-xl font-bold text-gray-800">סיכום חישוב</h2>
+
+            <!-- סך המשתתפים -->
+            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                <span class="font-medium text-gray-600">סך המשתתפים:</span>
+                <span id="totalPeopleOutput" class="font-bold text-gray-800">0</span>
+            </div>
+
+            <!-- עלות כוללת -->
+            <div class="flex justify-between p-3 bg-gray-50 rounded-lg">
+                <span class="font-medium text-gray-600">עלות כוללת לטיול:</span>
+                <span id="totalCostOutput" class="font-bold text-gray-800">0 ש"ח</span>
+            </div>
+
+            <!-- עודף/חסר לתקציב -->
+            <div class="flex justify-between p-3 rounded-lg" id="deficitBox">
+                <span class="font-medium text-gray-600" id="deficitLabel">עודף/חסר לתקציב (חסר):</span>
+                <span id="deficitOutput" class="font-bold text-red-600">0 ש"ח</span>
+            </div>
+
+            <!-- תוספת נדרשת לאדם -->
+            <div class="p-4 rounded-lg shadow-md" id="contributionBox">
+                <p class="text-center text-sm text-gray-600 mb-1">אם קיים חוסר, זהו הסכום שכל משתתף צריך להוסיף:</p>
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl font-extrabold text-green-700" id="contributionPerPersonOutput">
+                        0.00 ש"ח
+                    </span>
+                    <span class="text-xs text-gray-500 mt-1">(תוספת נדרשת למשתתף)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- הודעות שגיאה/מידע -->
+        <div id="messageBox" class="mt-4 p-3 rounded-lg text-center text-sm hidden"></div>
+    </div>
+
+    <script>
+        // הגדרות קבועות
+        const FIXED_BUDGET = 10000;
+        const COST_FULL = 525;
+        const COST_PARTIAL = 325;
+
+        // פונקציה לחישוב העלויות
+        function calculateCost() {
+            // קבלת הקלטים
+            const numFull = parseInt(document.getElementById('numFull').value) || 0;
+            const numPartial = parseInt(document.getElementById('numPartial').value) || 0;
+
+            // חישובים בסיסיים
+            const totalPeople = numFull + numPartial;
+            const totalCost = (numFull * COST_FULL) + (numPartial * COST_PARTIAL);
+            const deficit = totalCost - FIXED_BUDGET;
+
+            // אלמנטים של התוצאות
+            const totalPeopleOutput = document.getElementById('totalPeopleOutput');
+            const totalCostOutput = document.getElementById('totalCostOutput');
+            const deficitOutput = document.getElementById('deficitOutput');
+            const deficitLabel = document.getElementById('deficitLabel');
+            const deficitBox = document.getElementById('deficitBox');
+            const contributionPerPersonOutput = document.getElementById('contributionPerPersonOutput');
+            const contributionBox = document.getElementById('contributionBox');
+            const messageBox = document.getElementById('messageBox');
+
+            // עדכון סך המשתתפים והעלות הכוללת
+            totalPeopleOutput.textContent = totalPeople;
+            totalCostOutput.textContent = totalCost.toLocaleString('he-IL') + ' ש"ח';
+            
+            // איפוס סגנון
+            deficitBox.className = 'flex justify-between p-3 rounded-lg';
+            contributionBox.className = 'p-4 rounded-lg shadow-md';
+            messageBox.classList.add('hidden');
+            
+            let contributionPerPerson = 0;
+
+            if (totalPeople === 0) {
+                // מקרה: אין משתתפים
+                deficitLabel.textContent = 'עודף/חסר לתקציב:';
+                deficitOutput.textContent = '0 ש"ח';
+                deficitOutput.className = 'font-bold text-gray-800';
+                contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionBox.classList.add('bg-gray-100');
+                
+                messageBox.textContent = 'הכנס מספר משתתפים כדי להתחיל בחישוב.';
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-yellow-100 text-yellow-800';
+                
+                return;
+            }
+
+            if (deficit > 0) {
+                // מקרה: חסר כסף (Deficit)
+                deficitLabel.textContent = 'חסר לתקציב:';
+                deficitOutput.textContent = deficit.toLocaleString('he-IL') + ' ש"ח';
+                deficitOutput.className = 'font-bold text-red-600';
+                deficitBox.classList.add('bg-red-50');
+
+                // חישוב התוספת לאדם
+                contributionPerPerson = deficit / totalPeople;
+                contributionPerPersonOutput.textContent = contributionPerPerson.toFixed(2).toLocaleString('he-IL') + ' ש"ח';
+                contributionBox.classList.add('bg-green-100');
+                
+                messageBox.textContent = 'נדרשת תוספת של כסף מכל משתתף כדי לכסות את החוסר.';
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-green-100 text-green-800';
+
+            } else if (deficit < 0) {
+                // מקרה: יש עודף כסף (Surplus)
+                deficitLabel.textContent = 'עודף בתקציב:';
+                // מציג את העודף כערך חיובי
+                deficitOutput.textContent = (deficit * -1).toLocaleString('he-IL') + ' ש"ח'; 
+                deficitOutput.className = 'font-bold text-blue-600';
+                deficitBox.classList.add('bg-blue-50');
+                
+                contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionBox.classList.add('bg-gray-100');
+                
+                messageBox.textContent = `יש לכם עודף של ${(deficit * -1).toLocaleString('he-IL')} ש"ח. אין צורך בתוספת.`;
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-blue-100 text-blue-800';
+
+            } else {
+                // מקרה: בדיוק בכסף
+                deficitLabel.textContent = 'עודף/חסר לתקציב:';
+                deficitOutput.textContent = '0 ש"ח';
+                deficitOutput.className = 'font-bold text-gray-800';
+                deficitBox.classList.add('bg-yellow-50');
+                contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionBox.classList.add('bg-gray-100');
+                
+                messageBox.textContent = 'העלות הכוללת תואמת בדיוק לתקציב הקבוע! אין צורך בתוספת.';
+                messageBox.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-yellow-100 text-yellow-800';
+            }
+            
+            // תמיד מציג את הודעת המידע
+            messageBox.classList.remove('hidden');
+        }
+
+        // הפעלת החישוב הראשונית עם טעינת הדף (כדי לאפס את הפלטים)
+        window.onload = function() {
+            calculateCost();
+        };
+
+    </script>
+</body>
+</html>
