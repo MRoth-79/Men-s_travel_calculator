@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מחשבון מימון לטיול גברים</title>
-    <!-- טעינת Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- הגדרת פונט Inter -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
@@ -35,89 +33,113 @@
             מחשבון מימון לטיול גברים
         </h1>
         
-        <!-- נתונים קבועים - מודגשים במשטח צבעוני ונעים -->
         <div class="mb-8 bg-indigo-50 p-5 rounded-xl border-t-4 border-indigo-500 shadow-inner">
             <h2 class="text-xl font-bold text-indigo-800 mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block ml-2 rtl:mr-2 align-middle" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                נתוני התקציב הקבוע
+                הגדרות ונתוני בסיס
             </h2>
-            <div class="space-y-2 text-gray-700 text-base font-medium">
-                <p>
-                    <span class="text-indigo-600 font-semibold">10,000 ש"ח</span> 
-                    <span class="float-left rtl:float-right font-extrabold">תקציב קבוע:</span> 
-                </p>
-                <p>
-                    <span class="text-indigo-600 font-semibold">525 ש"ח</span> 
-                    <span class="float-left rtl:float-right font-extrabold">עלות למשתתף מלא:</span>
-                </p>
-                <p>
-                    <span class="text-indigo-600 font-semibold">325 ש"ח</span> 
-                    <span class="float-left rtl:float-right font-extrabold">עלות למשתתף חלקי:</span>
-                </p>
+            <div class="space-y-4 text-gray-700 text-base font-medium">
+                <div class="flex justify-between items-center bg-white p-3 rounded-lg border border-indigo-200">
+                    <span class="font-extrabold text-indigo-800">תקציב קבוע:</span>
+                    <span class="text-indigo-600 font-semibold">10,000 ש"ח</span>
+                </div>
+
+                <div>
+                    <label for="costFullInput" class="block text-sm font-semibold text-gray-700 mb-1">עלות למשתתף מלא (ש"ח):</label>
+                    <input type="number" id="costFullInput" value="525" min="0" 
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-lg text-center font-bold focus:ring-indigo-500 focus:border-indigo-500"
+                        oninput="calculateCost()">
+                </div>
+                
+                <div>
+                    <label for="costPartialInput" class="block text-sm font-semibold text-gray-700 mb-1">עלות למשתתף חלקי (ש"ח):</label>
+                    <input type="number" id="costPartialInput" value="325" min="0" 
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-lg text-center font-bold focus:ring-indigo-500 focus:border-indigo-500"
+                        oninput="calculateCost()">
+                </div>
             </div>
         </div>
 
-        <!-- טופס קלט - עם עיצוב אינטראקטיבי -->
         <div class="space-y-6">
-            <!-- קלט משתתפים מלאים -->
             <div>
                 <label for="numFull" class="block text-base font-semibold text-gray-700 mb-2">
-                    מספר משתתפים מלאים (525 ש"ח לאדם)
+                    מספר משתתפים מלאים
                 </label>
                 <input type="number" id="numFull" value="0" min="0" 
                         class="mt-1 block w-full px-4 py-3 border-2 border-indigo-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500" 
                         oninput="calculateCost()">
             </div>
 
-            <!-- קלט משתתפים חלקיים -->
             <div>
-                <label for="numPartial" class="block text-base font-semibold text-gray-700 mb-2">
-                    מספר משתתפים חלקיים (325 ש"ח לאדם)
+                <label for="amountCollectedFull" class="block text-base font-semibold text-gray-700 mb-2 mt-4">
+                    סכום שנגבה בפועל מכל משתתף מלא (בש"ח)
+                </label>
+                <input type="number" id="amountCollectedFull" value="0" min="0" 
+                        class="mt-1 block w-full px-4 py-3 border-2 border-green-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-green-200 focus:border-green-500" 
+                        oninput="calculateCost()">
+            </div>
+
+            <div>
+                <label for="numPartial" class="block text-base font-semibold text-gray-700 mb-2 mt-4">
+                    מספר משתתפים חלקיים
                 </label>
                 <input type="number" id="numPartial" value="0" min="0" 
                         class="mt-1 block w-full px-4 py-3 border-2 border-indigo-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-indigo-200 focus:border-indigo-500" 
                         oninput="calculateCost()">
             </div>
+
+            <div>
+                <label for="amountCollectedPartial" class="block text-base font-semibold text-gray-700 mb-2 mt-4">
+                    סכום שנגבה בפועל מכל משתתף חלקי (בש"ח)
+                </label>
+                <input type="number" id="amountCollectedPartial" value="0" min="0" 
+                        class="mt-1 block w-full px-4 py-3 border-2 border-green-300 rounded-xl shadow-md text-xl text-center transition duration-150 ease-in-out focus:ring-4 focus:ring-green-200 focus:border-green-500" 
+                        oninput="calculateCost()">
+            </div>
         </div>
 
-        <!-- כפתור שמירה - מודגש ונעים -->
         <div class="mt-8">
             <button onclick="saveCalculation()" 
                     class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-xl text-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition duration-300 ease-in-out transform hover:scale-[1.02]">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 rtl:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                 </svg>
                 שמור חישוב נוכחי
             </button>
         </div>
         
-        <!-- אזור תוצאות - עם צבעים דינמיים וגדולים -->
         <div class="mt-8 pt-6 border-t-2 border-indigo-100 space-y-4">
             <h2 class="text-2xl font-bold text-gray-800">סיכום חישוב נוכחי</h2>
 
-            <!-- סך המשתתפים -->
             <div class="flex justify-between p-4 bg-gray-50 rounded-xl border-l-4 border-gray-300">
                 <span class="font-medium text-gray-700">סך המשתתפים:</span>
                 <span id="totalPeopleOutput" class="font-extrabold text-xl text-gray-800">0</span>
             </div>
 
-            <!-- עלות כוללת -->
             <div class="flex justify-between p-4 bg-gray-50 rounded-xl border-l-4 border-gray-300">
-                <span class="font-medium text-gray-700">עלות כוללת לטיול:</span>
+                <span class="font-medium text-gray-700">עלות כוללת לטיול (יעד):</span>
                 <span id="totalCostOutput" class="font-extrabold text-xl text-indigo-600">0 ש"ח</span>
             </div>
 
-            <!-- עודף/חסר לתקציב - דינמי -->
+            <div class="flex justify-between p-4 bg-green-50 rounded-xl border-l-4 border-green-500">
+                <span class="font-extrabold text-green-800">סך שנגבה בפועל:</span>
+                <span id="totalCollectedOutput" class="font-extrabold text-xl text-green-700">0 ש"ח</span>
+            </div>
+
             <div class="flex justify-between p-4 rounded-xl shadow-inner transition duration-300" id="deficitBox">
-                <span class="font-semibold text-gray-700" id="deficitLabel">עודף/חסר לתקציב (חסר):</span>
+                <span class="font-semibold text-gray-700" id="deficitLabel">עודף/חסר (מתקציב קבוע):</span>
                 <span id="deficitOutput" class="font-extrabold text-xl text-red-600">0 ש"ח</span>
             </div>
 
-            <!-- תוספת נדרשת לאדם - האלמנט הכי בולט -->
+            <div class="flex justify-between p-4 rounded-xl shadow-inner transition duration-300" id="actualBalanceBox">
+                <span class="font-semibold text-gray-700" id="actualBalanceLabel">יתרה כספית בפועל (חסר):</span>
+                <span id="actualBalanceOutput" class="font-extrabold text-xl text-red-600">0 ש"ח</span>
+            </div>
+
             <div class="p-5 rounded-2xl shadow-lg transition duration-300 transform hover:scale-[1.01]" id="contributionBox">
-                <p class="text-center text-sm text-gray-600 mb-2 font-medium">אם קיים חוסר, זהו הסכום שכל משתתף צריך להוסיף:</p>
+                <p class="text-center text-sm text-gray-600 mb-2 font-medium">אם קיים חוסר, זהו הסכום שכל משתתף צריך להוסיף (מעבר למה שנגבה):</p>
                 <div class="flex flex-col items-center">
                     <span class="text-4xl font-black text-green-700" id="contributionPerPersonOutput">
                         0.00 ש"ח
@@ -127,10 +149,8 @@
             </div>
         </div>
 
-        <!-- הודעות שגיאה/מידע -->
         <div id="messageBox" class="mt-6 p-4 rounded-xl text-center text-sm font-medium hidden transition duration-300"></div>
 
-        <!-- טבלת היסטוריית חישובים -->
         <div class="mt-10 pt-6 border-t-2 border-indigo-100">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-gray-800">היסטוריית חישובים שנשמרו</h2>
@@ -140,7 +160,6 @@
                 </button>
             </div>
 
-            <!-- כפתור הורדת CSV -->
             <button onclick="downloadHistoryTableAsCSV()"
                     class="w-full flex justify-center items-center py-2 px-4 rounded-xl shadow-md text-base font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:scale-[1.01] mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 rtl:mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -157,14 +176,14 @@
                             <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">תאריך/שעה</th>
                             <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">מלאים</th>
                             <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">חלקיים</th>
-                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">סך עלות</th>
-                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">עודף/חסר</th>
-                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">תוספת לאדם</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">סך עלות (יעד)</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">סך שנגבה</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">יתרה כספית</th>
+                            <th class="py-3 px-3 border-b-2 border-indigo-300 text-center">תוספת נדרשת לאדם</th>
                         </tr>
                     </thead>
                     <tbody id="historyTableBody" class="bg-white">
-                        <!-- שורות החישוב ייטענו כאן -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 
@@ -176,15 +195,34 @@
 
     <script>
         // *** הערה חשובה: לצורך פשטות ופונקציונליות מיידית באפליקציה פשוטה זו, הנתונים נשמרים באופן זמני ב-localStorage. ***
-        // *** ליישום אחסון קבוע, מאובטח ומשותף (Multi-User), יש להשתמש ב-Firestore כנדרש. ***
 
         // הגדרות קבועות
         const FIXED_BUDGET = 10000;
-        const COST_FULL = 525;
-        const COST_PARTIAL = 325;
+        // ערכי ברירת מחדל לעלויות המקוריות
+        const DEFAULT_COST_FULL = 525;
+        const DEFAULT_COST_PARTIAL = 325;
 
         // מערך גלובלי לאחסון היסטוריית החישובים
         let calculationHistory = [];
+
+        /**
+         * פונקציה לקבלת העלויות העדכניות משדות הקלט.
+         * אם הקלט לא תקין, חוזר לברירות המחדל.
+         */
+        function getCostValues() {
+            const costFullInput = document.getElementById('costFullInput');
+            const costPartialInput = document.getElementById('costPartialInput');
+
+            // קורא את הערך משדה הקלט, אם לא קיים או לא תקין - משתמש בברירת מחדל
+            const costFull = parseInt(costFullInput ? costFullInput.value : null) || DEFAULT_COST_FULL;
+            const costPartial = parseInt(costPartialInput ? costPartialInput.value : null) || DEFAULT_COST_PARTIAL;
+            
+            return { 
+                costFull: costFull, 
+                costPartial: costPartial 
+            };
+        }
+
 
         /**
          * טוען את היסטוריית החישובים מ-localStorage.
@@ -238,30 +276,32 @@
                 const formattedTime = date.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
                 const formattedDate = date.toLocaleDateString('he-IL');
                 
-                // צביעה ועיצוב העודף/חסר
-                let deficitText;
-                let deficitClass;
+                // חישוב ועיצוב היתרה הכספית (actualBalance)
+                let balanceText;
+                let balanceClass;
                 
-                if (calc.deficit < 0) {
-                    deficitText = `עודף (${(calc.deficit * -1).toLocaleString('he-IL')} ש"ח)`;
-                    deficitClass = 'text-teal-600 font-bold'; // שימוש בצבע תכלת/טורקיז לעודף
-                } else if (calc.deficit > 0) {
-                    deficitText = `חסר (${calc.deficit.toLocaleString('he-IL')} ש"ח)`;
-                    deficitClass = 'text-red-600 font-bold'; // אדום לחוסר
+                if (calc.actualBalance > 0) {
+                    balanceText = `עודף (+${calc.actualBalance.toLocaleString('he-IL')} ש"ח)`;
+                    balanceClass = 'text-teal-600 font-bold'; // שימוש בצבע תכלת/טורקיז לעודף
+                } else if (calc.actualBalance < 0) {
+                    balanceText = `חסר (${(calc.actualBalance * -1).toLocaleString('he-IL')} ש"ח)`;
+                    balanceClass = 'text-red-600 font-bold'; // אדום לחוסר
                 } else {
-                    deficitText = 'מאוזן (0 ש"ח)';
-                    deficitClass = 'text-gray-600 font-medium';
+                    balanceText = 'מאוזן (0 ש"ח)';
+                    balanceClass = 'text-gray-600 font-medium';
                 }
 
                 // הוספת התאים
+                // ניתן להוסיף הצגת עלויות משתתף שהיו בשימוש
                 row.innerHTML = `
                     <td class="py-2 px-3 whitespace-nowrap text-gray-500">
                         ${formattedDate}<br><span class="text-xs text-gray-400">${formattedTime}</span>
                     </td>
-                    <td class="py-2 px-3 text-center font-medium">${calc.numFull}</td>
-                    <td class="py-2 px-3 text-center font-medium">${calc.numPartial}</td>
+                    <td class="py-2 px-3 text-center font-medium">${calc.numFull} (${calc.amountCollectedFull} ש"ח)</td>
+                    <td class="py-2 px-3 text-center font-medium">${calc.numPartial} (${calc.amountCollectedPartial} ש"ח)</td>
                     <td class="py-2 px-3 font-extrabold text-indigo-600">${calc.totalCost.toLocaleString('he-IL')} ש"ח</td>
-                    <td class="py-2 px-3 ${deficitClass}">${deficitText}</td>
+                    <td class="py-2 px-3 font-extrabold text-green-700">${calc.totalCollected.toLocaleString('he-IL')} ש"ח</td>
+                    <td class="py-2 px-3 ${balanceClass}">${balanceText}</td>
                     <td class="py-2 px-3 text-center text-base font-black text-green-700">${calc.contributionPerPerson.toFixed(2).toLocaleString('he-IL')} ש"ח</td>
                 `;
             });
@@ -271,10 +311,11 @@
          * שומר את החישוב הנוכחי להיסטוריה.
          */
         function saveCalculation() {
-            // ודא שהחישוב בוצע לפני השמירה
             const numFull = parseInt(document.getElementById('numFull').value) || 0;
             const numPartial = parseInt(document.getElementById('numPartial').value) || 0;
             const totalPeople = numFull + numPartial;
+            const amountCollectedFull = parseInt(document.getElementById('amountCollectedFull').value) || 0;
+            const amountCollectedPartial = parseInt(document.getElementById('amountCollectedPartial').value) || 0;
 
             if (totalPeople === 0) {
                 const messageBox = document.getElementById('messageBox');
@@ -284,18 +325,37 @@
                 return;
             }
 
-            // קבלת הנתונים מהפלט הנוכחי (כדי למנוע חישוב כפול)
-            const totalCost = (numFull * COST_FULL) + (numPartial * COST_PARTIAL);
-            const deficit = totalCost - FIXED_BUDGET;
-            const contributionPerPerson = deficit > 0 ? deficit / totalPeople : 0;
+            // --- שינוי: קבלת עלויות עדכניות משדות הקלט ---
+            const { costFull, costPartial } = getCostValues();
+            // ------------------------------------
+
+            // חישובים
+            const totalCost = (numFull * costFull) + (numPartial * costPartial);
+            const totalCollectedFromPeople = (numFull * amountCollectedFull) + (numPartial * amountCollectedPartial);
+            const totalCollected = totalCollectedFromPeople + FIXED_BUDGET;
+            const actualBalance = totalCollected - totalCost; // חיובי=עודף, שלילי=חסר
+
+            // החוסר שצריך לגבות כדי להגיע לעלות הכוללת (שלילי אם יש עודף)
+            const deficitNeeded = totalCost - totalCollected; 
+            
+            // חישוב התוספת לאדם: רק אם יש חוסר כספי בפועל
+            const contributionPerPerson = deficitNeeded > 0 ? deficitNeeded / totalPeople : 0;
             
             const newCalculation = {
                 timestamp: Date.now(),
                 numFull: numFull,
                 numPartial: numPartial,
+                // שמירת העלויות ששימשו בחישוב זה (כדי שיהיו ב-CSV)
+                costFullUsed: costFull, 
+                costPartialUsed: costPartial,
+                // --------------------------------------------
+                amountCollectedFull: amountCollectedFull, 
+                amountCollectedPartial: amountCollectedPartial, 
                 totalPeople: totalPeople,
                 totalCost: totalCost,
-                deficit: deficit, // חיובי=חסר, שלילי=עודף
+                totalCollected: totalCollected, // סך שנגבה כולל תקציב קבוע
+                deficit: totalCost - FIXED_BUDGET, // היתרה ביחס לתקציב הקבוע
+                actualBalance: actualBalance, // יתרה כספית בפועל (נגבה פחות עלות)
                 contributionPerPerson: contributionPerPerson
             };
 
@@ -315,7 +375,7 @@
         function clearHistory() {
             if (calculationHistory.length === 0) return;
 
-            // מבצע מחיקה מיידית (נמנע משימוש ב-confirm() האסור)
+            // מבצע מחיקה מיידית
             calculationHistory = [];
             saveHistory();
             renderHistory();
@@ -332,18 +392,38 @@
             // קבלת הקלטים
             const numFull = parseInt(document.getElementById('numFull').value) || 0;
             const numPartial = parseInt(document.getElementById('numPartial').value) || 0;
+            const amountCollectedFull = parseInt(document.getElementById('amountCollectedFull').value) || 0;
+            const amountCollectedPartial = parseInt(document.getElementById('amountCollectedPartial').value) || 0;
+
+            // --- שינוי: קבלת עלויות עדכניות משדות הקלט ---
+            const { costFull, costPartial } = getCostValues();
+            // ------------------------------------
 
             // חישובים בסיסיים
             const totalPeople = numFull + numPartial;
-            const totalCost = (numFull * COST_FULL) + (numPartial * COST_PARTIAL);
-            const deficit = totalCost - FIXED_BUDGET;
+            const totalCost = (numFull * costFull) + (numPartial * costPartial);
+            const totalCollectedFromPeople = (numFull * amountCollectedFull) + (numPartial * amountCollectedPartial);
+            const totalCollected = totalCollectedFromPeople + FIXED_BUDGET;
+            
+            // יתרה כספית בפועל: נגבה פחות עלות כוללת
+            const actualBalance = totalCollected - totalCost; // חיובי=עודף, שלילי=חסר
+            
+            // חוסר שצריך לגבות כדי להגיע לעלות הכוללת: עלות כוללת פחות נגבה
+            const deficitNeeded = totalCost - totalCollected; // חיובי=חסר שצריך לכסות, שלילי=עודף שקיים
+            
+            // היתרה ביחס לתקציב הקבוע בלבד
+            const deficitVsFixed = totalCost - FIXED_BUDGET;
 
             // אלמנטים של התוצאות
             const totalPeopleOutput = document.getElementById('totalPeopleOutput');
             const totalCostOutput = document.getElementById('totalCostOutput');
+            const totalCollectedOutput = document.getElementById('totalCollectedOutput'); 
             const deficitOutput = document.getElementById('deficitOutput');
             const deficitLabel = document.getElementById('deficitLabel');
             const deficitBox = document.getElementById('deficitBox');
+            const actualBalanceOutput = document.getElementById('actualBalanceOutput'); 
+            const actualBalanceLabel = document.getElementById('actualBalanceLabel'); 
+            const actualBalanceBox = document.getElementById('actualBalanceBox'); 
             const contributionPerPersonOutput = document.getElementById('contributionPerPersonOutput');
             const contributionBox = document.getElementById('contributionBox');
             const messageBox = document.getElementById('messageBox');
@@ -351,9 +431,11 @@
             // עדכון סך המשתתפים והעלות הכוללת
             totalPeopleOutput.textContent = totalPeople;
             totalCostOutput.textContent = totalCost.toLocaleString('he-IL') + ' ש"ח';
+            totalCollectedOutput.textContent = totalCollected.toLocaleString('he-IL') + ' ש"ח'; // עדכון חדש
             
             // איפוס סגנון
             deficitBox.className = 'flex justify-between p-4 rounded-xl shadow-inner transition duration-300';
+            actualBalanceBox.className = 'flex justify-between p-4 rounded-xl shadow-inner transition duration-300';
             contributionBox.className = 'p-5 rounded-2xl shadow-lg transition duration-300 transform hover:scale-[1.01]';
             messageBox.classList.add('hidden');
             
@@ -361,62 +443,89 @@
 
             if (totalPeople === 0) {
                 // מקרה: אין משתתפים
-                deficitLabel.textContent = 'עודף/חסר לתקציב:';
+                deficitLabel.textContent = 'עודף/חסר (מתקציב קבוע):';
                 deficitOutput.textContent = '0 ש"ח';
                 deficitOutput.className = 'font-bold text-xl text-gray-800';
+                deficitBox.classList.add('bg-gray-50', 'border-l-4', 'border-gray-300');
+                
+                actualBalanceLabel.textContent = 'יתרה כספית בפועל:';
+                actualBalanceOutput.textContent = FIXED_BUDGET.toLocaleString('he-IL') + ' ש"ח';
+                actualBalanceOutput.className = 'font-bold text-xl text-gray-800';
+                actualBalanceBox.classList.add('bg-gray-50', 'border-l-4', 'border-gray-300');
+                
                 contributionPerPersonOutput.textContent = '0.00 ש"ח';
                 contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
                 contributionBox.classList.add('bg-gray-100');
                 
-                messageBox.textContent = 'הכנס מספר משתתפים כדי להתחיל בחישוב.';
+                messageBox.textContent = 'הכנס מספר משתתפים וסכום שנגבה כדי להתחיל בחישוב.';
                 messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-yellow-100 text-yellow-800';
                 messageBox.classList.remove('hidden');
                 
                 return;
             }
 
-            if (deficit > 0) {
-                // מקרה: חסר כסף (Deficit)
-                deficitLabel.textContent = 'חסר לתקציב:';
-                deficitOutput.textContent = deficit.toLocaleString('he-IL') + ' ש"ח';
+            // עדכון היתרה ביחס לתקציב הקבוע בלבד
+            if (deficitVsFixed > 0) {
+                deficitLabel.textContent = 'חסר לתקציב (קבוע):';
+                deficitOutput.textContent = deficitVsFixed.toLocaleString('he-IL') + ' ש"ח';
                 deficitOutput.className = 'font-extrabold text-xl text-red-600';
                 deficitBox.classList.add('bg-red-50', 'border-l-4', 'border-red-400');
-
-                // חישוב התוספת לאדם
-                contributionPerPerson = deficit / totalPeople;
-                contributionPerPersonOutput.textContent = contributionPerPerson.toFixed(2).toLocaleString('he-IL') + ' ש"ח';
-                contributionPerPersonOutput.className = 'text-4xl font-black text-green-700';
-                contributionBox.classList.add('bg-green-100', 'border-4', 'border-green-300');
-                
-                messageBox.textContent = 'נדרשת תוספת של כסף מכל משתתף כדי לכסות את החוסר.';
-                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-green-100 text-green-800';
-
-            } else if (deficit < 0) {
-                // מקרה: יש עודף כסף (Surplus)
-                deficitLabel.textContent = 'עודף בתקציב:';
-                // מציג את העודף כערך חיובי
-                deficitOutput.textContent = (deficit * -1).toLocaleString('he-IL') + ' ש"ח'; 
-                deficitOutput.className = 'font-extrabold text-xl text-teal-600'; // שימוש בצבע תכלת/טורקיז לעודף
+            } else if (deficitVsFixed < 0) {
+                deficitLabel.textContent = 'עודף בתקציב (קבוע):';
+                deficitOutput.textContent = (deficitVsFixed * -1).toLocaleString('he-IL') + ' ש"ח';
+                deficitOutput.className = 'font-extrabold text-xl text-teal-600';
                 deficitBox.classList.add('bg-teal-50', 'border-l-4', 'border-teal-400');
-                
-                contributionPerPersonOutput.textContent = '0.00 ש"ח';
-                contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
-                contributionBox.classList.add('bg-gray-100');
-                
-                messageBox.textContent = `יש לכם עודף של ${(deficit * -1).toLocaleString('he-IL')} ש"ח. אין צורך בתוספת.`;
-                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-blue-100 text-blue-800';
-
             } else {
-                // מקרה: בדיוק בכסף
-                deficitLabel.textContent = 'מאוזן:';
+                deficitLabel.textContent = 'מאוזן (קבוע):';
                 deficitOutput.textContent = '0 ש"ח';
                 deficitOutput.className = 'font-extrabold text-xl text-gray-800';
                 deficitBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-400');
+            }
+
+
+            // חישוב והצגת היתרה הכספית בפועל (actualBalance)
+            if (actualBalance < 0) {
+                // מקרה: חסר כסף בפועל
+                actualBalanceLabel.textContent = 'חסר כספי בפועל:';
+                actualBalanceOutput.textContent = (actualBalance * -1).toLocaleString('he-IL') + ' ש"ח';
+                actualBalanceOutput.className = 'font-extrabold text-xl text-red-600';
+                actualBalanceBox.classList.add('bg-red-100', 'border-l-4', 'border-red-600');
+
+                // חישוב התוספת לאדם (רק אם יש חוסר)
+                contributionPerPerson = deficitNeeded / totalPeople;
+                contributionPerPersonOutput.textContent = contributionPerPerson.toFixed(2).toLocaleString('he-IL') + ' ש"ח';
+                contributionPerPersonOutput.className = 'text-4xl font-black text-red-700'; // צבע אדום לתוספת הנדרשת
+                contributionBox.classList.add('bg-red-100', 'border-4', 'border-red-300');
+                
+                messageBox.textContent = `נאסף סך של ${totalCollected.toLocaleString('he-IL')} ש"ח. חסר ${(actualBalance * -1).toLocaleString('he-IL')} ש"ח לכיסוי העלות הכוללת. נדרשת תוספת של ${contributionPerPerson.toFixed(2).toLocaleString('he-IL')} ש"ח לאדם.`;
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-red-100 text-red-800';
+
+            } else if (actualBalance > 0) {
+                // מקרה: יש עודף כסף בפועל
+                actualBalanceLabel.textContent = 'עודף כספי בפועל:';
+                actualBalanceOutput.textContent = actualBalance.toLocaleString('he-IL') + ' ש"ח';
+                actualBalanceOutput.className = 'font-extrabold text-xl text-teal-600';
+                actualBalanceBox.classList.add('bg-teal-100', 'border-l-4', 'border-teal-600');
+                
+                contributionPerPersonOutput.textContent = '0.00 ש"ח';
+                contributionPerPersonOutput.className = 'text-4xl font-black text-green-700';
+                contributionBox.classList.add('bg-green-100', 'border-4', 'border-green-300');
+                
+                messageBox.textContent = `נאסף סך של ${totalCollected.toLocaleString('he-IL')} ש"ח. יש לכם עודף של ${actualBalance.toLocaleString('he-IL')} ש"ח מעל העלות הכוללת.`;
+                messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-blue-100 text-blue-800';
+
+            } else {
+                // מקרה: בדיוק בכסף (מאוזן)
+                actualBalanceLabel.textContent = 'מאוזן כספי בפועל:';
+                actualBalanceOutput.textContent = '0 ש"ח';
+                actualBalanceOutput.className = 'font-extrabold text-xl text-gray-800';
+                actualBalanceBox.classList.add('bg-yellow-50', 'border-l-4', 'border-yellow-400');
+                
                 contributionPerPersonOutput.textContent = '0.00 ש"ח';
                 contributionPerPersonOutput.className = 'text-4xl font-black text-gray-500';
                 contributionBox.classList.add('bg-gray-100');
                 
-                messageBox.textContent = 'העלות הכוללת תואמת בדיוק לתקציב הקבוע! אין צורך בתוספת.';
+                messageBox.textContent = 'הסכום שנגבה תואם בדיוק לעלות הכוללת!';
                 messageBox.className = 'mt-6 p-4 rounded-xl text-center text-base font-medium bg-yellow-100 text-yellow-800';
             }
             
@@ -439,12 +548,16 @@
             // 1. כותרות ה-CSV
             const headers = [
                 "תאריך_ושעה",
+                "עלות_מלא_בשימוש", // הוספת העלות שהייתה בשימוש
+                "עלות_חלקי_בשימוש", // הוספת העלות שהייתה בשימוש
                 "משתתפים_מלאים",
+                "סכום_נגבה_ממלאים", 
                 "משתתפים_חלקיים",
+                "סכום_נגבה_מחלקיים", 
                 "סך_משתתפים",
                 "עלות_כוללת",
-                "יתרה_לתקציב_(חיובי=חסר_שלילי=עודף)",
-                "סטטוס",
+                "סך_שנגבה_בפועל", 
+                "יתרה_כספית_בפועל_(חיובי=עודף_שלילי=חסר)", 
                 "תוספת_נדרשת_לאדם"
             ];
             
@@ -453,16 +566,18 @@
                 const date = new Date(calc.timestamp);
                 const dateTimeStr = date.toLocaleDateString('he-IL') + ' ' + date.toLocaleTimeString('he-IL');
                 
-                const status = calc.deficit > 0 ? "חסר" : calc.deficit < 0 ? "עודף" : "מאוזן";
-
                 return [
                     `"${dateTimeStr}"`, // תאריך עם מרכאות כדי לשמור על הפורמט
+                    calc.costFullUsed || DEFAULT_COST_FULL, // שימוש בערך שנשמר או ברירת מחדל
+                    calc.costPartialUsed || DEFAULT_COST_PARTIAL, // שימוש בערך שנשמר או ברירת מחדל
                     calc.numFull,
+                    calc.amountCollectedFull, 
                     calc.numPartial,
+                    calc.amountCollectedPartial, 
                     calc.totalPeople,
                     calc.totalCost,
-                    calc.deficit, // הנתון הגולמי
-                    status,
+                    calc.totalCollected, 
+                    calc.actualBalance, 
                     calc.contributionPerPerson.toFixed(2)
                 ].join(','); // הפרדה באמצעות פסיקים
             });
